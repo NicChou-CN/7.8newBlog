@@ -14,8 +14,33 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
+
+#导入系统logging
+import logging
+# #创建（获取日志器）
+# logger = logging.getLogger('django')
+# from django.http import HttpResponse
+# def log(request):
+#     # 使用日志其记录信息
+#     logger.info('info')
+#     return HttpResponse('test')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # include的参数中首先设置一个元组[urlconf_modulr,app_name]
+    # urlconf_modulr:设置子应用的路由
+    # appname:设置子应用的名字
+    # namespace:设置子应用的别名
+    path('',include(('users.urls','users'),namespace='users')),
+
+    path('',include(('home.urls','home'),namespace='home'))
 ]
+
+# 图片访问路由
+from django.conf import settings
+from django.conf.urls.static import static
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
